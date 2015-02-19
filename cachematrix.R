@@ -1,15 +1,47 @@
-## Put comments here that give an overall description of what your
-## functions do
+## Programming Assignment 2 - R Programming
+## Testing the funcionality of caching variables
+## within the scope of a function. (Behaves much like
+## a Class in C++)
 
-## Write a short comment describing this function
+## function to store a matrix with ability to cache
+## its inverse to save processing power.
 
 makeCacheMatrix <- function(x = matrix()) {
-
+  
+    inv <- NULL
+    
+    set <- function(y) {
+      x <<- y
+      inv <<- NULL
+    }
+    
+    get <- function() x
+  
+    setInv <- function(inverse) inv <<- inverse
+    
+    getInv <- function() inv
+    
+    list(set = set, get = get, setInv = setInv, getInv = getInv)
 }
 
 
-## Write a short comment describing this function
+## Function to check if the inverse of a stored matrix
+## has been cached. If not, utilize solve() to get the
+## inverse.
 
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+    
+  inv <- x$getInv()
+  
+  if(!is.null(inv)) {
+    message("getting cached data")
+  }
+  else {
+    mtrx <- x$get()
+    inv <- solve(mtrx, ...)
+    x$setInv(inv)
+  }
+
+  return(inv)
+  
 }
